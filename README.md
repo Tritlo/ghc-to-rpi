@@ -1,5 +1,5 @@
 
-ckerfile to cross compile Haskell to Raspberry Pi
+Dockerfile to cross compile Haskell to Raspberry Pi
 ===================================================
 
 Follow the [instructions by zw3rk](https://medium.com/@zw3rk/making-a-raspbian-cross-compilation-sdk-830fe56d75ba)
