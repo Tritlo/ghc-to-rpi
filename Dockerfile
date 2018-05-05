@@ -34,10 +34,23 @@ RUN    mkdir -p /rpi/prebuilt/arm-linux-gnueabihf/ \
     && unzip -j -d /rpi/prebuilt/arm-linux-gnueabihf/bin/ toolchain-wrapper.zip\
     && rm -f toolchain-wrapper.zip
 
+RUN mkdir -p /rpi/cabal\
+    && curl -sSL https://www.haskell.org/cabal/release/cabal-install-2.2.0.0/cabal-install-2.2.0.0-x86_64-unknown-linux.tar.gz -o cabal.tar.gz\
+    && tar -xvf cabal.tar.gz -C /rpi/cabal/\
+    && rm -f cabal.tar.gz
+
+RUN mkdir -p /rpi/ghc-host-dist\
+    && curl -sSL https://downloads.haskell.org/~ghc/8.4.2/ghc-8.4.2-x86_64-deb8-linux.tar.xz -o ghc-host.tar.gz
+    && tar -xvf ghc-host.tar-gz -C /rpi/ghc-host-dist --strip-components=1\
+    && rm -rf ghc-host.tar.gz\
+    && cd /rpi/ghc-host-dist && ./configure --prefix=/rpi/ghc\
+    && ln -s /rpi/ghc/lib/ghc-8.4.2/bin /rpi/ghc/lib/bin
+    && make install
+
 ADD raspberrypi-toolchain.config /rpi/prebuilt/arm-linux-gnueabihf/bin/
 RUN cd /rpi/prebuilt/arm-linux-gnueabihf/bin && /rpi/prebuilt/arm-linux-gnueabihf/bin/bootstrap
 
-ENV PATH "/rpi/prebuilt/bin:/rpi/prebuilt/arm-linux-gnueabihf/bin:/rpi/ghc/bin:${PATH}"
+ENV PATH "/rpi/ghc-host/bin:/rpi/cabal:/rpi/prebuilt/bin:/rpi/prebuilt/arm-linux-gnueabihf/bin:/rpi/ghc/bin:${PATH}"
 RUN mkdir -p /rpi/sysroot/
 
 
