@@ -39,18 +39,11 @@ RUN mkdir -p /rpi/cabal\
     && tar -xvf cabal.tar.gz -C /rpi/cabal/\
     && rm -f cabal.tar.gz
 
-RUN mkdir -p /rpi/ghc-host-dist\
-    && curl -sSL https://downloads.haskell.org/~ghc/8.4.2/ghc-8.4.2-x86_64-deb8-linux.tar.xz -o ghc-host.tar.gz
-    && tar -xvf ghc-host.tar-gz -C /rpi/ghc-host-dist --strip-components=1\
-    && rm -rf ghc-host.tar.gz\
-    && cd /rpi/ghc-host-dist && ./configure --prefix=/rpi/ghc\
-    && ln -s /rpi/ghc/lib/ghc-8.4.2/bin /rpi/ghc/lib/bin
-    && make install
-
 ADD raspberrypi-toolchain.config /rpi/prebuilt/arm-linux-gnueabihf/bin/
 RUN cd /rpi/prebuilt/arm-linux-gnueabihf/bin && /rpi/prebuilt/arm-linux-gnueabihf/bin/bootstrap
 
 ENV PATH "/rpi/ghc-host/bin:/rpi/cabal:/rpi/prebuilt/bin:/rpi/prebuilt/arm-linux-gnueabihf/bin:/rpi/ghc/bin:${PATH}"
 RUN mkdir -p /rpi/sysroot/
 
+WORKDIR /code
 
