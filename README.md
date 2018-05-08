@@ -13,7 +13,11 @@ to get the sysroot from your Raspberry Pi for the libraries:
           pi@raspberrypi:/lib/arm-linux-gnueabihf \
           sysroot/
 
-Build the container with:
+Use the prebuilt docker image
+
+    docker run --rm -it -v $(pwd)/sysroot/:/rpi/sysroot/ tritlo/ghc-to-rpi
+
+or build the container with:
   
     docker build -t ghc-to-rpi .
 
@@ -25,3 +29,6 @@ And you can now cross-compile with
 
     arm-linux-gnueabihf-ghc 
 
+and use `cabal` with
+
+    arm-linux-gnueabihf-cabal
